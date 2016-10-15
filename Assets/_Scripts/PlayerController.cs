@@ -21,6 +21,8 @@ public class PlayerController : MonoBehaviour {
     [Header("Sound Clips")]
     public AudioSource jumpSound;
     public AudioSource deathSound;
+    public AudioSource coinSound;
+    public AudioSource hurtSound;
 
     // Use this for initialization
     void Start() {
@@ -99,6 +101,16 @@ public class PlayerController : MonoBehaviour {
     private void OnCollisionEnter2D(Collision2D other) {
         if (other.gameObject.CompareTag("DeathPlane")) {
             deathSound.Play();
+            // lose life
+            transform.position = spawnPoint.position;
+        }
+        if (other.gameObject.CompareTag("Coin")) {
+            DestroyObject(other.gameObject);
+            coinSound.Play();
+        }
+        if (other.gameObject.CompareTag("Enemy")) {
+            hurtSound.Play();
+            // lose life
             transform.position = spawnPoint.position;
         }
     }

@@ -68,5 +68,8 @@
     <Compile Include="Assets\_Scripts\KillScript.cs" />
     <Compile Include="Assets\_Scripts\PlayerController.cs" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="Assets\Editor\ReorderMyComponents_ReadMe.txt" />
+  </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\SyntaxTree\UnityVS\2015\UnityVS.CSharp.targets" />
 </Project>

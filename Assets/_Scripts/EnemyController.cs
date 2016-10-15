@@ -19,6 +19,9 @@ public class EnemyController : MonoBehaviour {
     public Transform sightEnd;
     public Transform lineOfSight;
 
+    [Header("Sound Clips")]
+    public AudioSource deathSound;
+
     // Use this for initialization
     void Start() {
         initialize();
@@ -57,6 +60,19 @@ public class EnemyController : MonoBehaviour {
             } else {
                 speed = INITIAL_SPEED;
             }
+        }
+    }
+
+    public void OnTriggerEnter2D(Collider2D other) {
+        if (other.gameObject.CompareTag("Player")) {
+            deathSound.Play();
+            gameObject.transform.position = Vector2.one * 99999999f;
+            Destroy(gameObject, 3);
+
+            //http://answers.unity3d.com/questions/252874/play-audio-on-destroy.html
+            //audio.PlayOneShot(aClip);
+            //renderer.enabled = false;
+            //Destroy(gameObject, aClip.length); //waits till audio is finished playing before destroying.
         }
     }
 

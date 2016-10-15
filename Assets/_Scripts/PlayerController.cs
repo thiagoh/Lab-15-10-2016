@@ -10,11 +10,13 @@ public class PlayerController : MonoBehaviour {
     private float jump;
     private bool facingRight;
     private bool grounded;
+    private Animator animator;
+    private Camera camera;
+    private Transform spawnPoint;
 
     public float velocity = 10f;
     public float jumpForce = 100f;
-    public Camera camera;
-    public Transform spawnPoint;
+
 
     [Header("Sound Clips")]
     public AudioSource jumpSound;
@@ -34,14 +36,20 @@ public class PlayerController : MonoBehaviour {
             move = Input.GetAxis("Horizontal");
 
             if (move > 0f) {
+                // set the animation to walk
+                animator.SetInteger("HeroState", 1);
                 move = 1f;
                 facingRight = true;
                 flip();
             } else if (move < 0f) {
+                // set the animation to walk
+                animator.SetInteger("HeroState", 1);
                 move = -1f;
                 facingRight = false;
                 flip();
             } else {
+                // set the animation to idle
+                animator.SetInteger("HeroState", 0);
                 move = 0f;
             }
 
@@ -96,14 +104,18 @@ public class PlayerController : MonoBehaviour {
     }
 
     public void OnCollisionExit2D(Collision2D other) {
-
+        // set the animation to jump
+        animator.SetInteger("HeroState", 2);
         grounded = false;
     }
 
     private void initialize() {
+        camera = GameObject.FindWithTag("MainCamera").GetComponent<Camera>();
+        spawnPoint = GameObject.FindWithTag("SpawnPoint").transform;
 
         transform = GetComponent<Transform>();
         rigidbody = GetComponent<Rigidbody2D>();
+        animator = GetComponent<Animator>();
         move = 0f;
         facingRight = true;
         grounded = false;

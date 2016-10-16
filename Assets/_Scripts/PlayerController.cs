@@ -13,6 +13,7 @@ public class PlayerController : MonoBehaviour {
     private Animator animator;
     private Camera camera;
     private Transform spawnPoint;
+    private GameController gameController;
 
     public float velocity = 10f;
     public float jumpForce = 100f;
@@ -98,20 +99,27 @@ public class PlayerController : MonoBehaviour {
         }
     }
 
+    public void OnTriggerEnter2D(Collider2D other) {
+        if (other.gameObject.CompareTag("Coin")) {
+            DestroyObject(other.gameObject);
+            coinSound.Play();
+            gameController.ScoreValue += 10;
+        }
+    }
+
     private void OnCollisionEnter2D(Collision2D other) {
         if (other.gameObject.CompareTag("DeathPlane")) {
             deathSound.Play();
             // lose life
             transform.position = spawnPoint.position;
+            gameController.LivesValue -= 1;
         }
-        if (other.gameObject.CompareTag("Coin")) {
-            DestroyObject(other.gameObject);
-            coinSound.Play();
-        }
+
         if (other.gameObject.CompareTag("Enemy")) {
             hurtSound.Play();
             // lose life
             transform.position = spawnPoint.position;
+            gameController.LivesValue -= 1;
         }
     }
 
@@ -122,6 +130,7 @@ public class PlayerController : MonoBehaviour {
     }
 
     private void initialize() {
+        gameController = GameObject.Find("GameController").GetComponent<GameController>();
         camera = GameObject.FindWithTag("MainCamera").GetComponent<Camera>();
         spawnPoint = GameObject.FindWithTag("SpawnPoint").transform;
 
